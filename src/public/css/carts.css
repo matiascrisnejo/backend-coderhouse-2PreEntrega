@@ -1,0 +1,43 @@
+h1 {
+    color: red;
+    text-align: center;
+}
+
+.go-back-btn {
+    background-color: blue;
+    display: block;
+    padding: .5rem;
+    margin: 1rem auto;
+    border: none;
+    cursor: pointer;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:visited {
+    color: white;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    padding: .5rem;
+    border: .1rem solid black;
+}
+
+td {
+    padding: .5rem;
+    border: .1rem solid black;
+    text-align: center;
+}
+
+h2 {
+    color: green;
+    text-align: center;
+}

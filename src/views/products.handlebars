@@ -1,0 +1,45 @@
+<h1>Listado de productos</h1>
+
+<button class="view-cart-btn" id="view-cart" onclick="viewCart()">Ver carrito</button>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Código</th>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Categoría</th>
+        <th>Status</th>
+        <th>Precio</th>
+    </tr>
+
+    {{#each products.docs}}
+    <tr>
+        <td>{{id}}</td>
+        <td>{{code}}</td>
+        <td>{{title}}</td>
+        <td>{{description}}</td>
+        <td>{{category}}</td>
+        <td>{{status}}</td>
+        <td>${{price}}</td>
+        <td>
+            <button class="add-to-cart-btn" id="add-to-cart" onclick="addProductToCart('{{id}}')">Agregar al carrito</button>
+        </td>
+    </tr>
+    {{/each}}
+</table>
+
+<div class="pagination">
+    {{#if products.hasPrevPage}}
+    <a href={{products.prevLink}}><<</a>
+    {{/if}}
+
+    <p>{{products.page}} de {{products.totalPages}}</p>
+
+    {{#if products.hasNextPage}}
+    <a href={{products.nextLink}}>>></a>
+    {{/if}}
+</div>
+
+<script src="/js/products.js"></script>
+

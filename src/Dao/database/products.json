@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "title": "zapatilla puma",
+    "description": "zapatilla",
+    "price": "500",
+    "category": "zapatillas",
+    "status": true,
+    "thumbnail": "https://i.ibb.co/nngfHbZ/puma.png|",
+    "code": "asdsadasdsa",
+    "stock": "222"
+  },
+  {
+    "id": 2,
+    "title": "bbbbbb",
+    "description": "bbbbbbbbb",
+    "price": "77",
+    "category": "bbbbbbbbbbb",
+    "status": true,
+    "thumbnail": "https://i.ibb.co/nngfHbZ/puma.png|",
+    "code": "bbb",
+    "stock": "9999999"
+  },
+  {
+    "id": 3,
+    "title": "c",
+    "description": "c",
+    "price": "5",
+    "category": "c",
+    "status": true,
+    "thumbnail": "https://i.ibb.co/nngfHbZ/puma.png|",
+    "code": "c",
+    "stock": "4"
+  },
+  {
+    "id": 4,
+    "title": "d",
+    "description": "d",
+    "price": "5",
+    "category": "d",
+    "status": true,
+    "thumbnail": "https://i.ibb.co/nngfHbZ/puma.png|",
+    "code": "d",
+    "stock": "5"
+  }
+]
