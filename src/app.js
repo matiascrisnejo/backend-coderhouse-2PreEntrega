@@ -13,12 +13,14 @@ import routerC from "./routes/carts.router.js"
 const app = express()
 const PORT = 3000
 
+app.use(express.json());
+app.use(express.static(__dirname+"/public"))
 
 app.use("/api/products", routerP)
 app.use("/", routerV)
 app.use("/api/carts", routerC)
 
-app.use(express.static(__dirname+"/public"))
+
 
 app.engine("handlebars",handlebars.engine())
 app.set("views", __dirname+"/views")

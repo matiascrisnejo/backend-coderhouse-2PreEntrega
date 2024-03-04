@@ -1,38 +1,27 @@
-<h1>Carrito ID {{cart._id}}</h1>
+<div class="container mt-5">
+    <h1 class="mb-4">Shopping Cart</h1>
 
-<button class="go-back-btn">
-    <a href="/products">Volver</a>
-</button>
+    {{#if result}}
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text"><strong>Cart ID:</strong> {{result._id}}</p>
 
-{{#if cart.products}}
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Código</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
-        <th>Categoría</th>
-        <th>Precio</th>
-        <th>Cantidad</th>
-        <th>Subtotal</th>
-    </tr>
-
-    {{#each cart.products}}
-    <tr>
-        <td>{{product._id}}</td>
-        <td>{{product.code}}</td>
-        <td>{{product.title}}</td>
-        <td>{{product.description}}</td>
-        <td>{{product.category}}</td>
-        <td>${{product.price}}</td>
-        <td>{{quantity}}</td>
-        <td>${{total}}</td>
-    </tr>
-    {{/each}}
-</table>
-
-<h2>Total del carrito ${{cart.total}}</h2>
-
-{{else}}
-<h2>No hay productos en el carrito</h2>
-{{/if}}
+                <ul class="list-group">
+                    {{#each result.products }}
+                        <li class="list-group-item">
+                            <h3 class="mb-2">Title: {{this._id.title}}</h3>
+                            <p class="mb-1">Description: {{this._id.description}}</p>
+                            <p class="mb-1">Category: {{this._id.category}}</p>
+                            <p class="mb-1">Quantity: {{this.quantity}}</p>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    {{else}}
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Empty Cart</h4>
+            <p>{{message}}</p>
+        </div>
+    {{/if}}
+</div>

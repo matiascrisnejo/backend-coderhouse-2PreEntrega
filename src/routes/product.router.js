@@ -10,98 +10,92 @@ import { __dirname } from "../utils.js"
 const pm = new ProductManager()
 const routerP = express.Router()
 
-routerP.use((req, res, next) => {
-    if (req.method === 'POST' || req.method === 'PUT') {
-        const { title, description, code, price, status, stock, category, thumbnails } = req.body;
-        if (!title || !description || !code || !price || !status || !stock || !category || !thumbnails) {
-            return res.status(400).json({ error: 'Faltan campos obligatorios' });
-        }
-    }
-    next();
-});
-
 
 routerP.get("/",async(req, res)=>{
     
     try {
-        const products = await pm.getProducts(req);
-        res.json({
-            status: 'success',
-            payload: products.docs,
-            totalPages: products.totalPages,
-            prevPage: products.prevPage,
-            nextPage: products.nextPage,
-            page: products.page,
-            hasPrevPage: products.hasPrevPage,
-            hasNextPage: products.hasNextPage,
-            prevLink: products.prevLink,
-            nextLink: products.nextLink
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-
-    //const productList = await pm.getProducts(req.query)
-    //res.json({productList})
+        let { limit, page, sort, category } = req.query
+        console.log(req.originalUrl);
+  
+        const options = {
+            page: Number(page) || 1,
+            limit: Number(limit) || 10,
+            sort: { price: Number(sort) }
+        };
+  
+        if (!(options.sort.price === -1 || options.sort.price === 1)) {
+            delete options.sort
+        }
+  
+  
+        const links = (products) => {
+          let prevLink;
+          let nextLink;
+          if (req.originalUrl.includes('page')) {
+              prevLink = products.hasPrevPage ? req.originalUrl.replace(`page=${products.page}`, `page=${products.prevPage}`) : null;
+              nextLink = products.hasNextPage ? req.originalUrl.replace(`page=${products.page}`, `page=${products.nextPage}`) : null;
+              return { prevLink, nextLink };
+          }
+          if (!req.originalUrl.includes('?')) {
+              prevLink = products.hasPrevPage ? req.originalUrl.concat(`?page=${products.prevPage}`) : null;
+              nextLink = products.hasNextPage ? req.originalUrl.concat(`?page=${products.nextPage}`) : null;
+              return { prevLink, nextLink };
+          }
+          prevLink = products.hasPrevPage ? req.originalUrl.concat(`&page=${products.prevPage}`) : null;
+          nextLink = products.hasNextPage ? req.originalUrl.concat(`&page=${products.nextPage}`) : null;
+          return { prevLink, nextLink };
+  
+      }
+    
+    
+  
+        // Devuelve un array con las categorias disponibles y compara con la query "category"
+        const categories = await pm.categories()
+  
+        const result = categories.some(categ => categ === category)
+        if (result) {
+  
+            const products = await pm.getProducts({ category }, options);
+            console.log(products)
+            const { prevLink, nextLink } = links(products);
+            const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products
+            return res.status(200).send({ status: 'success', payload: docs, totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, prevLink, nextLink });
+  
+        }
+  
+       const products = await pm.getProducts({}, options);
+  
+          const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products
+          const { prevLink, nextLink } = links(products);
+  
+          if (page > totalPages) return res.render('notFound', { pageNotFound: '/products' })
+  
+          return res.render('home', { products: docs, totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, prevLink, nextLink, page });
+      } catch (error) {
+          console.log(error);
+      }
 })
 
 
 routerP.get("/:pid",async(req, res)=>{
-
-    try {
-        const id = req.params.pid;
-        const product = await pm.getProductById(id);
-        res.json({ status: 'success', payload: product });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-
-    //const productFind = await pm.getProductById(req.params)
-    //res.json({ status: "success", productFind })
+    const productfind = await pm.getProductById(req.params);
+    res.json({ status: "success", productfind });
 })
 
 routerP.post("/",async(req, res)=>{
-
-    try {
-        const product = req.body;
-        const newProduct = await pm.createProduct(product);
-        res.json({ status: 'success', payload: newProduct });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-
-    //const newproduct = await pm.addProducts(req.body)
-    //res.json({ status: "success", newproduct })
+    const newproduct = await pm.addProduct(req.body);
+     res.json({ status: "success", newproduct });
 })
 
 routerP.put("/:pid", async(req, res)=>{
-    
-    try {
-        const id = req.params.pid;
-        const product = req.body;
-        const updatedProduct = await pm.updateProduct(id, product);
-        res.json({ status: 'success', payload: updatedProduct });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-    
-    //const updateproduct = await pm.updateProduct(req.params, req.body)
-    //res.json({ status: "success", updateproduct })
+    const updatedproduct = await pm.updateProduct(req.params,req.body);
+     res.json({ status: "success", updatedproduct });
 })
 
 routerP.delete("/:pid", async(req, res)=>{
-    
-    try {
-        const id = req.params.pid;
-        const deletedProduct = await pm.deleteProduct(id);
-        res.json({ status: 'success', payload: deletedProduct });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-
-    //const id = parseInt(req.params.pid)
-    //const deleteproduct = await pm.deleteProduct(id)
-    //res.json({ status: "success", deleteproduct })
+    const id=parseInt(req.params.pid)
+    const deleteproduct = await pm.deleteProduct(id);
+     res.json({ status: "success",deleteproduct });
 })
 
 export default routerP;

@@ -7,8 +7,7 @@ const productCollection="products"
 const productSchema= new mongoose.Schema({
     title: {
         type: String,
-        required: true,
-        index: true
+        required: true
     },
     description: {
         type: String,
@@ -29,13 +28,11 @@ const productSchema= new mongoose.Schema({
     code: {
         type: String,
         unique: true, // Se asegura que el código sea único
-        required: true,
-        index: true
+        required: true
     },
     category: {
         type: String,
-        required: true,
-        index: true
+        required: true
     },
     status: {
         type: Boolean,
