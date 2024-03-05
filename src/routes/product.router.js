@@ -60,7 +60,7 @@ routerP.get("/",async(req, res)=>{
             const { prevLink, nextLink } = links(products);
             const { totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, docs } = products
             return res.status(200).send({ status: 'success', payload: docs, totalPages, prevPage, nextPage, hasNextPage, hasPrevPage, prevLink, nextLink });
-  
+            
         }
   
        const products = await pm.getProducts({}, options);

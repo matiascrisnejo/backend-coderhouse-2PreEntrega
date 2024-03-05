@@ -86,6 +86,24 @@ export default class CartManager{
         return await cartsModel.findOne({ _id: cid })
     }
 
+    async updateProductQuantity(cartId, productId, quantity) {
+        try {
+            let cart = await this.getCartById(cartId);
+            const productIndex = cart.products.findIndex(product => product.product._id.toString() === productId);
+            if (productIndex === -1) {
+                throw new Error(`No se encontró el producto con id ${productId} en el carrito con id ${cartId}`);
+            } else {
+                cart.products[productIndex].quantity = quantity;
+            }
+            await cartsModel.updateOne({ _id: cartId }, { products: cart.products });
+            cart = await this.getCartById(cartId);
+            return cart;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
     async deleteCart(id) {
         try {
             let cart = await this.getCartById(id);

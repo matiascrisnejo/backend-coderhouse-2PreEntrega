@@ -122,7 +122,7 @@ catch (err) {
   }
 })
 
-/* 
+
 routerC.put('/:cid/products/:pid', async (req, res) => {
   try {
       const cartId = req.params.cid;
@@ -155,6 +155,6 @@ routerC.delete('/:cid/products/:pid', async (req, res) => {
       res.status(500).json({ error: error.message });
   }
 });
-*/
+
 
 export default routerC
